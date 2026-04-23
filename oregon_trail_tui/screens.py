@@ -48,18 +48,18 @@ class SetupScreen(_Box):
         self._names = ["Ben", "Sarah", "Mary", "Tom", "John"]
 
     def on_mount(self) -> None:
-        self._render()
+        self._redraw()
 
     def action_pick_profession(self, name: str) -> None:
         self.game.choose_profession(name)
         self._step = "month"
-        self._render()
+        self._redraw()
 
     def action_cycle_month(self) -> None:
         if self._step != "month":
             return
         self._month_idx = (self._month_idx + 1) % len(MONTHS)
-        self._render()
+        self._redraw()
 
     def action_next_step(self) -> None:
         if self._step == "profession":
@@ -70,15 +70,16 @@ class SetupScreen(_Box):
             self.game.start_month(MONTHS[self._month_idx])
             self.game.set_party(self._names)
             self._step = "shop"
-            # Hand off to the shop screen.
-            self.app.pop_screen()
-            self.app.push_screen(ShopScreen(self.game))
-        self._render()
+            # Hand off to the shop screen. Dismiss self with a sentinel so
+            # the app knows to push ShopScreen next (not enter trail yet).
+            self.dismiss("needs_shop")
+            return
+        self._redraw()
 
     def action_dismiss_screen(self) -> None:
         self.dismiss()
 
-    def _render(self) -> None:
+    def _redraw(self) -> None:
         c = self.query_one("#content", Static)
         t = Text()
         t.append("THE OREGON TRAIL\n", style="bold #ffbb44")
@@ -137,7 +138,7 @@ class ShopScreen(_Box):
         self.game = game
 
     def on_mount(self) -> None:
-        self._render()
+        self._redraw()
 
     def action_buy(self, idx: int) -> None:
         item, step, _label = SHOP_ITEMS[idx]
@@ -145,17 +146,17 @@ class ShopScreen(_Box):
             self.game.log(f"Bought {step} {item}.")
         else:
             self.game.log(f"Not enough cash for {item}.")
-        self._render()
+        self._redraw()
 
     def action_depart(self) -> None:
         # don't let the player leave with zero oxen
         if self.game.supplies.oxen < 2:
             self.game.log("You need at least 2 oxen to pull the wagon.")
-            self._render()
+            self._redraw()
             return
         self.dismiss()
 
-    def _render(self) -> None:
+    def _redraw(self) -> None:
         c = self.query_one("#content", Static)
         t = Text()
         t.append("MATT'S GENERAL STORE — Independence, MO\n", style="bold #ffbb44")
@@ -224,7 +225,7 @@ class RiverScreen(_Box):
         self.ev = ev
 
     def on_mount(self) -> None:
-        self._render()
+        self._redraw()
 
     def action_choose(self, choice: str) -> None:
         depth = int(self.ev.data.get("depth", 3))
@@ -233,14 +234,14 @@ class RiverScreen(_Box):
         # `resolve_river` may have set a new pending "wait" event
         if self.game.pending and self.game.pending.kind == "river":
             self.ev = self.game.pending
-            self._render()
+            self._redraw()
         else:
             self.dismiss()
 
     def action_dismiss_screen(self) -> None:
         self.dismiss()
 
-    def _render(self) -> None:
+    def _redraw(self) -> None:
         c = self.query_one("#content", Static)
         depth = self.ev.data.get("depth", 3)
         width = self.ev.data.get("width", 400)
@@ -289,7 +290,7 @@ class FortScreen(_Box):
         self.fort = ev.data.get("landmark", "Fort Kearney")
 
     def on_mount(self) -> None:
-        self._render()
+        self._redraw()
 
     def action_buy(self, idx: int) -> None:
         item, step, _label = FORT_ITEMS[idx]
@@ -297,12 +298,12 @@ class FortScreen(_Box):
             self.game.log(f"Bought {step} {item} at {self.fort}.")
         else:
             self.game.log(f"Couldn't afford {item} at {self.fort}.")
-        self._render()
+        self._redraw()
 
     def action_depart(self) -> None:
         self.dismiss()
 
-    def _render(self) -> None:
+    def _redraw(self) -> None:
         c = self.query_one("#content", Static)
         prices = self.game.fort_prices(self.fort)
         t = Text()
@@ -353,7 +354,7 @@ class HuntScreen(_Box):
             self.targets.append((name, name))
 
     def on_mount(self) -> None:
-        self._render()
+        self._redraw()
 
     def on_key(self, event) -> None:
         if event.key == "enter":
@@ -364,7 +365,7 @@ class HuntScreen(_Box):
             self.typed = self.typed[:-1]
         elif len(event.key) == 1 and event.key.isalpha():
             self.typed += event.key
-        self._render()
+        self._redraw()
 
     def action_submit(self) -> None:
         if self.target_idx >= len(self.targets):
@@ -383,7 +384,7 @@ class HuntScreen(_Box):
             self.game.log(msg)
             self.dismiss()
             return
-        self._render()
+        self._redraw()
 
     def action_leave(self) -> None:
         if self.hits:
@@ -391,7 +392,7 @@ class HuntScreen(_Box):
             self.game.log(msg)
         self.dismiss()
 
-    def _render(self) -> None:
+    def _redraw(self) -> None:
         c = self.query_one("#content", Static)
         t = Text()
         t.append("HUNTING\n", style="bold #ffbb44")

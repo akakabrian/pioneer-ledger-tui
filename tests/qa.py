@@ -326,6 +326,43 @@ async def _title(app: OregonTrailApp, pilot) -> None:
     assert_gt(app.game.miles_traveled, 0)
 
 
+# ---- interactive setup (regression lock) ---------------------------------
+
+
+async def _run_interactive_setup() -> tuple[str, bool, str]:
+    """Dedicated runner — can't use the skip_setup fixture."""
+    name = "interactive_setup_profession_month_shop"
+    try:
+        app = OregonTrailApp(seed=42)
+        async with app.run_test(size=(140, 50)) as pilot:
+            await pilot.pause()
+            # Setup: banker → April → shop → depart
+            await pilot.press("1");   await pilot.pause()
+            await pilot.press("enter"); await pilot.pause()
+            await pilot.press("enter"); await pilot.pause()
+            # ShopScreen — buy 8 ox pairs + 30 × 50 lbs food
+            for _ in range(8):
+                await pilot.press("1"); await pilot.pause()
+            for _ in range(30):
+                await pilot.press("2"); await pilot.pause()
+            await pilot.press("enter"); await pilot.pause()
+            assert_eq(app.game.profession, "banker")
+            assert_ge(app.game.supplies.oxen, 4)
+            assert_ge(app.game.supplies.food, 500)
+            assert app._setup_done
+        return name, True, ""
+    except Exception:
+        return name, False, traceback.format_exc()
+
+
+# Register as a bare entry for the runner (needs a custom path).
+SCENARIOS.append(Scenario(
+    "interactive_setup_profession_month_shop",
+    needs_tui=False,  # we'll handle directly in _run
+    fn=_run_interactive_setup,  # type: ignore[arg-type]
+))
+
+
 # ---- robustness ----------------------------------------------------------
 
 
@@ -418,6 +455,8 @@ async def _run_tui(scn: Scenario) -> tuple[str, bool, str]:
 
 
 async def _run(scn: Scenario) -> tuple[str, bool, str]:
+    if scn.name == "interactive_setup_profession_month_shop":
+        return await _run_interactive_setup()
     if scn.needs_tui:
         return await _run_tui(scn)
     return await _run_engine(scn)

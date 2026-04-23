@@ -207,7 +207,15 @@ class OregonTrailApp(App):
             "ammo": 200, "wheel": 1, "axle": 1, "tongue": 1,
         })
 
-    def _setup_done_cb(self, _result) -> None:
+    def _setup_done_cb(self, result) -> None:
+        # SetupScreen dismisses with "needs_shop" when profession+month
+        # have been picked but the player still has to outfit the wagon.
+        if result == "needs_shop":
+            self.push_screen(ShopScreen(self.game), self._shop_done_cb)
+            return
+        self._begin_trail()
+
+    def _shop_done_cb(self, _result) -> None:
         self._begin_trail()
 
     def _begin_trail(self) -> None:
