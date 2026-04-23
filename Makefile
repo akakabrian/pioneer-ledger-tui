@@ -1,4 +1,4 @@
-.PHONY: all venv run test test-only clean
+.PHONY: all venv run test test-only playtest perf clean
 
 all: venv
 
@@ -15,6 +15,12 @@ test: venv
 
 test-only: venv
 	.venv/bin/python -m tests.qa $(PAT)
+
+playtest: venv
+	.venv/bin/python -m tests.playtest
+
+perf: venv
+	.venv/bin/python -m tests.perf
 
 clean:
 	rm -rf oregon_trail_tui/__pycache__ tests/__pycache__ tests/out/*.svg

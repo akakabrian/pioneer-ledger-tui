@@ -167,7 +167,7 @@ class OregonTrailApp(App):
         self._title_bar: TitleBar | None = None
         self._trail_panel: TrailPanel | None = None
         self._party_panel: PartyPanel | None = None
-        self._log: RichLog | None = None
+        self._log_panel: RichLog | None = None
         self._prompt_bar: PromptBar | None = None
         self._logged_count = 0
 
@@ -185,7 +185,7 @@ class OregonTrailApp(App):
         self._title_bar = self.query_one("#title-bar", TitleBar)
         self._trail_panel = self.query_one("#trail-panel", TrailPanel)
         self._party_panel = self.query_one("#party-panel", PartyPanel)
-        self._log = self.query_one("#log-panel", RichLog)
+        self._log_panel = self.query_one("#log-panel", RichLog)
         self._prompt_bar = self.query_one("#prompt-bar", PromptBar)
         if self._skip_setup:
             self._fast_setup()
@@ -222,9 +222,10 @@ class OregonTrailApp(App):
         self._setup_done = True
         self.game.start_trail()
         self.refresh_ui()
-        self._prompt_bar.set_prompt(
-            "SPACE next day  H hunt  R rest  P pace  F food  S shop  Q quit  ? help"
-        )
+        if self._prompt_bar is not None:
+            self._prompt_bar.set_prompt(
+                "SPACE next day  H hunt  R rest  P pace  F food  S shop  Q quit  ? help"
+            )
 
     # --- actions ---------------------------------------------------------
 
@@ -336,7 +337,7 @@ class OregonTrailApp(App):
         if self._party_panel is not None:
             self._party_panel.refresh_panel(self.game)
         # flush new messages to log
-        if self._log is not None:
+        if self._log_panel is not None:
             while self._logged_count < len(self.game.messages):
-                self._log.write(self.game.messages[self._logged_count])
+                self._log_panel.write(self.game.messages[self._logged_count])
                 self._logged_count += 1

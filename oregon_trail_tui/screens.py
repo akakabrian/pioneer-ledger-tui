@@ -29,8 +29,15 @@ class _Box(ModalScreen[None]):
 # --- setup ------------------------------------------------------------------
 
 
-class SetupScreen(_Box):
+class SetupScreen(ModalScreen[str | None]):
+    """Setup dismisses with "needs_shop" to signal the app to push ShopScreen."""
+
     BOX_ID = "setup-box"
+
+    def compose(self) -> ComposeResult:
+        with Vertical(id=self.BOX_ID):
+            yield Static("", id="content")
+
     BINDINGS = [
         Binding("1", "pick_profession('banker')",    "banker"),
         Binding("2", "pick_profession('carpenter')", "carpenter"),
@@ -436,7 +443,8 @@ class EndScreen(_Box):
         t.append(f"Survivors: {alive}/5\n")
         t.append(f"Days on trail: {self.game.days_on_trail}\n")
         t.append(f"Miles traveled: {self.game.miles_traveled}\n")
-        t.append(f"Profession multiplier: ×{PROFESSIONS[self.game.profession][1]}\n")
+        prof = self.game.profession or "farmer"
+        t.append(f"Profession multiplier: ×{PROFESSIONS[prof][1]}\n")
         t.append(f"Supply value: ${self.game.supplies.value():.2f}\n")
         t.append(f"Final score: {self.game.final_score}\n\n", style="bold")
         t.append("Press ENTER to exit.\n", style="dim")
