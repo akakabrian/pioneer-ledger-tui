@@ -1,0 +1,65 @@
+Screen {
+    background: #181410;
+    color: #d8c9a8;
+}
+
+#title-bar {
+    dock: top;
+    height: 3;
+    background: #2a1f12;
+    color: #ffbb44;
+    border-bottom: solid #5a3d12;
+    content-align: center middle;
+    text-style: bold;
+}
+
+#main {
+    height: 1fr;
+}
+
+#trail-panel {
+    width: 2fr;
+    border: solid #5a3d12;
+    padding: 1 2;
+}
+
+#party-panel {
+    width: 1fr;
+    border: solid #5a3d12;
+    padding: 1 2;
+}
+
+#log-panel {
+    dock: bottom;
+    height: 12;
+    border-top: solid #5a3d12;
+    background: #120f0a;
+    padding: 0 1;
+}
+
+#prompt-bar {
+    dock: bottom;
+    height: 3;
+    background: #2a1f12;
+    color: #ffbb44;
+    padding: 0 1;
+    content-align: left middle;
+}
+
+ShopScreen, SetupScreen, HuntScreen, RiverScreen, FortScreen, EndScreen, LandmarkScreen {
+    align: center middle;
+}
+
+ShopScreen > #shop-box,
+SetupScreen > #setup-box,
+HuntScreen > #hunt-box,
+RiverScreen > #river-box,
+FortScreen > #fort-box,
+EndScreen > #end-box,
+LandmarkScreen > #lm-box {
+    width: 80;
+    height: auto;
+    border: thick #ffbb44;
+    background: #181410;
+    padding: 1 2;
+}

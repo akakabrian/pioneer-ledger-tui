@@ -1,0 +1,18 @@
+[project]
+name = "oregon-trail-tui"
+version = "0.1.0"
+description = "Clean-room terminal port inspired by the 1985 MECC Oregon Trail."
+requires-python = ">=3.10"
+dependencies = [
+    "textual>=0.80,<10",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["oregon_trail_tui"]
+
+[tool.setuptools.package-data]
+oregon_trail_tui = ["tui.tcss"]
