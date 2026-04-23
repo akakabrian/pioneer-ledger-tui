@@ -690,6 +690,9 @@ class Game:
         }
 
     def fort_buy(self, fort_name: str, item: str, qty: int) -> bool:
+        # Only allow trading at actual forts on the trail.
+        if not any(lm.name == fort_name and lm.kind == "fort" for lm in LANDMARKS):
+            return False
         prices = self.fort_prices(fort_name)
         if item not in prices:
             return False
