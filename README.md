@@ -1,4 +1,7 @@
 # pioneer-ledger-tui
+
+> Inspired by The Oregon Trail (1971, MECC). Trademarks belong to their respective owners. Unaffiliated fan project.
+
 The trail west starts here.
 
 ![Hero](screenshots/hero.svg)
