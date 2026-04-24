@@ -17,9 +17,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Awaitable, Callable
 
-from oregon_trail_tui.app import OregonTrailApp
-from oregon_trail_tui.game import Game, PROFESSIONS
-from oregon_trail_tui.landmarks import LANDMARKS, TOTAL_MILES
+from pioneer_ledger_tui.app import OregonTrailApp
+from pioneer_ledger_tui.game import Game, PROFESSIONS
+from pioneer_ledger_tui.landmarks import LANDMARKS, TOTAL_MILES
 
 OUT_DIR = Path(__file__).parent / "out"
 OUT_DIR.mkdir(exist_ok=True)

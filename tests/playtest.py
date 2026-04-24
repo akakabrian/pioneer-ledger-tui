@@ -13,8 +13,8 @@ import sys
 import traceback
 from pathlib import Path
 
-from oregon_trail_tui.app import OregonTrailApp
-from oregon_trail_tui.screens import RiverScreen
+from pioneer_ledger_tui.app import OregonTrailApp
+from pioneer_ledger_tui.screens import RiverScreen
 
 OUT_DIR = Path(__file__).parent / "out"
 OUT_DIR.mkdir(exist_ok=True)

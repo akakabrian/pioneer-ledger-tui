@@ -11,8 +11,8 @@ import asyncio
 import sys
 import time
 
-from oregon_trail_tui.app import OregonTrailApp
-from oregon_trail_tui.game import Game
+from pioneer_ledger_tui.app import OregonTrailApp
+from pioneer_ledger_tui.game import Game
 
 
 ENGINE_TURNS = 50_000           # advance_day calls across fresh games

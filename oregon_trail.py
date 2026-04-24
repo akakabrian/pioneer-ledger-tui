@@ -3,11 +3,11 @@ from __future__ import annotations
 
 import argparse
 
-from oregon_trail_tui.app import OregonTrailApp
+from pioneer_ledger_tui.app import OregonTrailApp
 
 
 def main() -> int:
-    p = argparse.ArgumentParser(prog="oregon-trail-tui")
+    p = argparse.ArgumentParser(prog="pioneer-ledger-tui")
     p.add_argument("--seed", type=int, default=None, help="RNG seed")
     p.add_argument("--skip-setup", action="store_true",
                    help="Bypass shop / profession prompts (dev)")

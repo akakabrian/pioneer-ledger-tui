@@ -23,4 +23,4 @@ perf: venv
 	.venv/bin/python -m tests.perf
 
 clean:
-	rm -rf oregon_trail_tui/__pycache__ tests/__pycache__ tests/out/*.svg
+	rm -rf pioneer_ledger_tui/__pycache__ tests/__pycache__ tests/out/*.svg

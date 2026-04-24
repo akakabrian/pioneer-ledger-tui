@@ -1,4 +1,4 @@
-# Decisions — oregon-trail-tui
+# Decisions — pioneer-ledger-tui
 
 ## Licensing / Clean-room (Stage 1)
 
